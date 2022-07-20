@@ -1,11 +1,14 @@
 import React from 'react'
-import { MenuLeftVerticalComponent } from 'components'
 
-import { verticalMenu } from 'constants/data/menu'
-import { sizes } from 'constants/data/ui_defaults'
+import { SidebarComponent } from 'components'
 
 const LandingPage = () => {
-  return <MenuLeftVerticalComponent size={sizes.small} isVertical={true} menuItems={verticalMenu} />
+  return (
+    <div>
+      <SidebarComponent />
+      <div className="Content"></div>
+    </div>
+  )
 }
 
 export default LandingPage
