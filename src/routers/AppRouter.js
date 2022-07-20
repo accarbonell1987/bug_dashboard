@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { LandingPage, Error404 } from 'screens'
+import { LandingPage, Error404 } from 'pages'
 
 const AppRouter = ({ serverAddress }) => {
   return (

@@ -1,17 +1,17 @@
-const saveItemLocalStorage = (item) => {
+const saveInLocalStorage = (item) => {
   let data = {
     userName: item,
     isLoggedIn: true,
   }
-  localStorage.setItem('bugs_app', JSON.stringify(data))
+  localStorage.setItem('bugsApp', JSON.stringify(data))
 }
 
-const getItemLocalStorage = (item) => {
+const getInLocalStorage = (item) => {
   return JSON.parse(localStorage.getItem(item))
 }
 
-const removeItemLocalStorage = (item) => {
+const removeInLocalStorage = (item) => {
   localStorage.removeItem(item)
 }
 
-export { saveItemLocalStorage, getItemLocalStorage, removeItemLocalStorage }
+export { saveInLocalStorage, getInLocalStorage, removeInLocalStorage }
