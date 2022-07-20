@@ -1,12 +1,21 @@
 import React from 'react'
 
-import { SidebarComponent } from 'components'
+import { SidebarComponent, ContentComponent } from 'components'
+
+import './styles.css'
 
 const LandingPage = () => {
   return (
-    <div>
-      <SidebarComponent />
-      <div className="Content"></div>
+    <div className="LandingPage">
+      <div className="ComponentsGrids">
+        <div>
+          <SidebarComponent />
+        </div>
+        <div>
+          <ContentComponent />
+        </div>
+        <div></div>
+      </div>
     </div>
   )
 }
