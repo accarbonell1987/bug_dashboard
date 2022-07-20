@@ -1,17 +1,17 @@
-const USER = '**chat**user'
-
-const getUser = () => {
-  try {
-    return JSON.parse(localStorage.getItem(USER))
-  } catch {
-    return false
+const saveItemLocalStorage = (item) => {
+  let data = {
+    userName: item,
+    isLoggedIn: true,
   }
-}
-const setUser = (data) => {
-  localStorage.setItem(USER, JSON.stringify(data))
-}
-const removeUser = () => {
-  localStorage.removeItem(USER)
+  localStorage.setItem('bugs_app', JSON.stringify(data))
 }
 
-export { getUser, setUser, removeUser }
+const getItemLocalStorage = (item) => {
+  return JSON.parse(localStorage.getItem(item))
+}
+
+const removeItemLocalStorage = (item) => {
+  localStorage.removeItem(item)
+}
+
+export { saveItemLocalStorage, getItemLocalStorage, removeItemLocalStorage }

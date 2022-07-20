@@ -1,7 +1,6 @@
 import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Error404 from 'screens/Error404'
-import Landing from 'screens/Landing'
+import { LandingPage, Error404 } from 'screens'
 
 const AppRouter = ({ serverAddress }) => {
   return (
@@ -9,12 +8,12 @@ const AppRouter = ({ serverAddress }) => {
       <Switch>
         <Route path={'/landing'}>
           <h1>
-            <Landing serverAddress={serverAddress} />
+            <LandingPage serverAddress={serverAddress} />
           </h1>
         </Route>
         <Route exact path={'/'}>
           <h1>
-            <Landing serverAddress={serverAddress} />
+            <LandingPage serverAddress={serverAddress} />
           </h1>
         </Route>
         <Route path={'*'}>
