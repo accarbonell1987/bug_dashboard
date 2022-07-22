@@ -66,9 +66,6 @@ const TableBugComponent = () => {
           const avatarName = GetRandomAvatarName()
           return (
             <Table.Row key={index}>
-              {/* <Table.Cell>{index === 0 ? <Label ribbon>{projectName}</Label> : { projectName }}</Table.Cell>
-              <Table.Cell>{UserHeader(avatarName, userName, '')}</Table.Cell>
-              <Table.Cell>{bug.descripcionBug}</Table.Cell> */}
               <Table.Cell>{projectName}</Table.Cell>
               <Table.Cell>{UserHeader(avatarName, userName, '')}</Table.Cell>
               <Table.Cell>{description}</Table.Cell>
