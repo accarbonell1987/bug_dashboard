@@ -30,7 +30,7 @@ const TableBugComponent = () => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
-            <AddBugComponent />
+            <AddBugComponent refreshListEvent={() => getAllBugs()} bugsData={bugsData} />
           </Table.HeaderCell>
         </Table.Row>
         <Table.Row>

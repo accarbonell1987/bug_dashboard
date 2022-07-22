@@ -2,10 +2,15 @@ import React, { useState } from 'react'
 import { Button, Icon, Image, Modal } from 'semantic-ui-react'
 
 const ModalComponent = (props) => {
-  const { title, triggerButtonProps } = props
+  const { title, triggerButtonProps, form, handleOK } = props
   const { iconName, label } = triggerButtonProps
 
   const [open, setOpen] = useState(false)
+
+  const handleOKEvent = () => {
+    handleOK()
+    setOpen(false)
+  }
 
   return (
     <Modal
@@ -22,13 +27,11 @@ const ModalComponent = (props) => {
       <Modal.Header>{title}</Modal.Header>
       <Modal.Content image>
         <Image size="medium" rounded src="img/bugs.jpg" />
-        <Modal.Description>
-          <p>Would you like to upload this image?</p>
-        </Modal.Description>
+        <Modal.Description>{form}</Modal.Description>
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button onClick={() => setOpen(false)} positive>
+        <Button onClick={() => handleOKEvent()} positive>
           Ok
         </Button>
       </Modal.Actions>
