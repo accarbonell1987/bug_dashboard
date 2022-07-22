@@ -1,70 +1,80 @@
-import React from 'react'
-import { Icon, Label, Menu, Header, Image, Table } from 'semantic-ui-react'
+import React, { useEffect, useState } from 'react'
+import { Icon, Menu, Header, Image, Table } from 'semantic-ui-react'
 
 import { ButtonComponent } from 'components'
+import { GetRandomAvatarName } from 'helpers/avatars'
+import BugServices from 'api/bugs'
+
+import '../styles.css'
 
 const TableBugComponent = () => {
+  const assetsPath = 'assets/images/avatars'
+
+  const [bugsData, setBugsData] = useState([])
+
+  const getAllBugs = async () => {
+    const { resultados } = await BugServices.GetAllBugs()
+    setBugsData(resultados)
+  }
+
+  useEffect(() => {
+    getAllBugs()
+  }, [])
+
   const TableHeader = () => {
     return (
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
-            <ButtonComponent floated={true} hasIcon={true} isPrimary={true} iconName={'plus'} label="Add Bugs" />
+            <ButtonComponent hasIcon={true} isPrimary={true} iconName={'plus'} label="Add Bugs" />
           </Table.HeaderCell>
         </Table.Row>
         <Table.Row>
-          <Table.HeaderCell>Header</Table.HeaderCell>
-          <Table.HeaderCell>Header</Table.HeaderCell>
-          <Table.HeaderCell>Header</Table.HeaderCell>
+          <Table.HeaderCell>
+            <h3>Project</h3>
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            <h3>Users</h3>
+          </Table.HeaderCell>
+          <Table.HeaderCell>
+            <h3>Description</h3>
+          </Table.HeaderCell>
         </Table.Row>
       </Table.Header>
     )
   }
 
   const TableBody = () => {
+    const UserHeader = (image, contentLabel, subHeaderLabel) => {
+      return (
+        <Header as="h4" image>
+          <Image src={`${assetsPath}/${image}`} rounded size="mini" />
+          <Header.Content>
+            {contentLabel}
+            <Header.Subheader>{subHeaderLabel}</Header.Subheader>
+          </Header.Content>
+        </Header>
+      )
+    }
+
     return (
       <Table.Body>
-        <Table.Row>
-          <Table.Cell>
-            <Label ribbon>First</Label>
-          </Table.Cell>
-          <Table.Cell>Cell</Table.Cell>
-          <Table.Cell>Cell</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image src={'assets/images/avatars/daniel.jpg'} rounded size="mini" />
-              <Header.Content>
-                Daniel
-                <Header.Subheader>Human Resources</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image src="assets/images/avatars/jenny.jpg" rounded size="mini" />
-              <Header.Content>
-                Jenny
-                <Header.Subheader>Human Resources</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-          <Table.Cell>
-            <Header as="h4" image>
-              <Image src="assets/images/avatars/steve.jpg" rounded size="mini" />
-              <Header.Content>
-                Steve
-                <Header.Subheader>Human Resources</Header.Subheader>
-              </Header.Content>
-            </Header>
-          </Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Cell</Table.Cell>
-          <Table.Cell>Cell</Table.Cell>
-          <Table.Cell>Cell</Table.Cell>
-        </Table.Row>
+        {bugsData.map((bug, index) => {
+          const userName = bug.usuario.nombreYApellidos
+          const projectName = bug.proyecto.nombreProyecto
+          const description = bug.descripcionBug
+          const avatarName = GetRandomAvatarName()
+          return (
+            <Table.Row key={index}>
+              {/* <Table.Cell>{index === 0 ? <Label ribbon>{projectName}</Label> : { projectName }}</Table.Cell>
+              <Table.Cell>{UserHeader(avatarName, userName, '')}</Table.Cell>
+              <Table.Cell>{bug.descripcionBug}</Table.Cell> */}
+              <Table.Cell>{projectName}</Table.Cell>
+              <Table.Cell>{UserHeader(avatarName, userName, '')}</Table.Cell>
+              <Table.Cell>{description}</Table.Cell>
+            </Table.Row>
+          )
+        })}
       </Table.Body>
     )
   }

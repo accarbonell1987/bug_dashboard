@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 
-const ButtonComponent = ({ floated, hasIcon, isPrimary, iconName, label }) => {
+const ButtonComponent = (props) => {
+  const { hasIcon, isPrimary, iconName, label } = props
   return (
-    <Button floated={floated} icon={hasIcon} labelPosition="left" primary={isPrimary} size="small">
+    <Button floated={'left'} icon={hasIcon} labelPosition="left" primary={isPrimary} size="small">
       <Icon name={iconName} />
       {label}
     </Button>

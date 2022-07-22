@@ -5,7 +5,7 @@ const Axios = () => {
   const instance = axios.create({
     baseURL: url,
     headers: {
-      // Authorization: `Bearer ${authToken}`,
+      // 'Access-Control-Allow-Origin': 'http://localhost:3000',
     },
   })
 
