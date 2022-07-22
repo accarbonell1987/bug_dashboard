@@ -8,12 +8,16 @@ import BugServices from 'api/bugs'
 import '../styles.css'
 
 const TableBugComponent = () => {
-  const assetsPath = 'assets/images/avatars'
+  const assetsPath = 'img/avatars'
 
+  const [usePagination, setUsePagination] = useState(false)
   const [bugsData, setBugsData] = useState([])
 
   const getAllBugs = async () => {
     const { resultados } = await BugServices.GetAllBugs()
+    const pag = resultados.length > 10 ? true : false
+
+    setUsePagination(pag)
     setBugsData(resultados)
   }
 
@@ -64,6 +68,7 @@ const TableBugComponent = () => {
           const projectName = bug.proyecto.nombreProyecto
           const description = bug.descripcionBug
           const avatarName = GetRandomAvatarName()
+
           return (
             <Table.Row key={index}>
               <Table.Cell>{projectName}</Table.Cell>
@@ -79,22 +84,24 @@ const TableBugComponent = () => {
   const TableFooter = () => {
     return (
       <Table.Footer>
-        <Table.Row>
-          <Table.HeaderCell colSpan="3">
-            <Menu floated="right" pagination>
-              <Menu.Item as="a" icon>
-                <Icon name="chevron left" />
-              </Menu.Item>
-              <Menu.Item as="a">1</Menu.Item>
-              <Menu.Item as="a">2</Menu.Item>
-              <Menu.Item as="a">3</Menu.Item>
-              <Menu.Item as="a">4</Menu.Item>
-              <Menu.Item as="a" icon>
-                <Icon name="chevron right" />
-              </Menu.Item>
-            </Menu>
-          </Table.HeaderCell>
-        </Table.Row>
+        {usePagination && (
+          <Table.Row>
+            <Table.HeaderCell colSpan="3">
+              <Menu floated="right" pagination>
+                <Menu.Item as="a" icon>
+                  <Icon name="chevron left" />
+                </Menu.Item>
+                <Menu.Item as="a">1</Menu.Item>
+                <Menu.Item as="a">2</Menu.Item>
+                <Menu.Item as="a">3</Menu.Item>
+                <Menu.Item as="a">4</Menu.Item>
+                <Menu.Item as="a" icon>
+                  <Icon name="chevron right" />
+                </Menu.Item>
+              </Menu>
+            </Table.HeaderCell>
+          </Table.Row>
+        )}
       </Table.Footer>
     )
   }

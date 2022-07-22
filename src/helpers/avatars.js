@@ -9,7 +9,7 @@ const ListOfAvatarsByName = () =>
   })
 
 const GetRandomAvatarName = () => {
-  const listOfAvatars = ['daniel.jpg', 'elliot.jpg', 'jenny.jpg', 'matthew.jpg', 'molly.jpg', 'steve.jpg']
+  const listOfAvatars = ['daniel.jpg', 'elliot.jpg', 'jenny.jpg', 'matthew.png', 'molly.jpg', 'steve.jpg']
   return GetRandomElementFromList(listOfAvatars)
 }
 
