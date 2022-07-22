@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Icon, Menu, Header, Image, Table } from 'semantic-ui-react'
 
-import { ButtonComponent } from 'components'
 import { GetRandomAvatarName } from 'helpers/avatars'
 import BugServices from 'api/bugs'
 
 import '../styles.css'
+import AddBugComponent from './Add'
 
 const TableBugComponent = () => {
   const assetsPath = 'img/avatars'
@@ -30,7 +30,7 @@ const TableBugComponent = () => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
-            <ButtonComponent hasIcon={true} isPrimary={true} iconName={'plus'} label="Add Bugs" />
+            <AddBugComponent />
           </Table.HeaderCell>
         </Table.Row>
         <Table.Row>
