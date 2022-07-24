@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import { Form, TextArea } from 'semantic-ui-react'
 import { ModalComponent } from 'components'
+import BugsServices from 'api/bugs'
 
 const AddBugComponent = (prop) => {
+  const submitButtonReference = useRef()
+
   const { refreshListEvent, bugsData } = prop
 
   //control de los estados del formulario
@@ -11,23 +14,21 @@ const AddBugComponent = (prop) => {
     user: { value: '', error: false },
     description: { value: '', error: false },
   })
-  // const test = [{ key: 1, value: 'test', text: 'test' }]
 
   //extraer los proyectos y usuarios
   const data = { projects: [], users: [] }
   bugsData.forEach((bug) => {
-    // if (!data.projects[bug.proyectoId])
     if (!data.projects.find((p) => p.key === bug.proyectoId))
       data.projects.push({
         key: bug.proyectoId,
         text: bug.proyecto.nombreProyecto,
-        value: bug.proyecto.nombreProyecto,
+        value: bug.proyectoId,
       })
     if (!data.users.find((p) => p.key === bug.userId))
       data.users.push({
         key: bug.usuarioId,
         text: bug.usuario.nombreYApellidos,
-        value: bug.usuario.nombreYApellidos,
+        value: bug.usuarioId,
       })
   })
 
@@ -35,7 +36,13 @@ const AddBugComponent = (prop) => {
     setFieldsData({ ...fieldsData, [name]: { value, error: false } })
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const bug = {
+      project: fieldsData.project.value,
+      user: fieldsData.user.value,
+      description: fieldsData.description.value,
+    }
+    await BugsServices.AddBug(bug)
     refreshListEvent()
   }
 
@@ -45,13 +52,11 @@ const AddBugComponent = (prop) => {
         <Form.Select
           required
           name={'project'}
-          // icon="js"
-          // iconPosition="left"
           label="Projects:"
           placeholder="Select Project"
           options={projects || []}
           error={fieldsData.project.error}
-          // onChange={(e, { value }) => handleChange(e, { name: 'project', value })}
+          onChange={(e, { value }) => handleChange(e, { name: 'project', value })}
           fluid
           clearable
         />
@@ -62,7 +67,7 @@ const AddBugComponent = (prop) => {
           placeholder="Select User"
           options={users || []}
           error={fieldsData.user.error}
-          // onChange={(e, { value }) => handleChange(e, { name: 'user', value })}
+          onChange={(e, { value }) => handleChange(e, { name: 'user', value })}
           fluid
           clearable
         />
@@ -75,6 +80,7 @@ const AddBugComponent = (prop) => {
           error={fieldsData.description.error}
           onChange={(e, { value }) => handleChange(e, { name: 'description', value })}
         />
+        <input type={'submit'} ref={submitButtonReference} hidden />
       </Form>
     )
   }

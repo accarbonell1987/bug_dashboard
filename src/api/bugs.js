@@ -8,9 +8,8 @@ const BugsServices = {
     return data
   },
   AddBug: async (bug) => {
-    const { description, project, user } = bug
     const endpoint = 'bug'
-    const { data } = await Axios().post(endpoint, { user, project, description })
+    const { data } = await Axios().post(endpoint, bug)
     return data
   },
 }
