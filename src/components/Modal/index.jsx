@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Icon, Image, Modal } from 'semantic-ui-react'
+import { Button, Icon, Modal } from 'semantic-ui-react'
 
 const ModalComponent = (props) => {
   const { title, triggerButtonProps, form, handleOK } = props
@@ -14,9 +14,11 @@ const ModalComponent = (props) => {
 
   return (
     <Modal
+      closeIcon
       onClose={() => setOpen(false)}
       onOpen={() => setOpen(true)}
       open={open}
+      dimmer={'blurring'}
       trigger={
         <Button floated={'left'} labelPosition="left" size="small" icon={true} primary={true}>
           <Icon name={iconName} />
@@ -25,8 +27,7 @@ const ModalComponent = (props) => {
       }
     >
       <Modal.Header>{title}</Modal.Header>
-      <Modal.Content image>
-        <Image size="medium" rounded src="img/bugs.jpg" />
+      <Modal.Content>
         <Modal.Description>{form}</Modal.Description>
       </Modal.Content>
       <Modal.Actions>

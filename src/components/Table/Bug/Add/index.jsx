@@ -11,22 +11,24 @@ const AddBugComponent = (prop) => {
     user: { value: '', error: false },
     description: { value: '', error: false },
   })
+  // const test = [{ key: 1, value: 'test', text: 'test' }]
 
   //extraer los proyectos y usuarios
   const data = { projects: [], users: [] }
   bugsData.forEach((bug) => {
-    if (!data.projects[bug.proyectoId])
-      data.projects[bug.proyectoId] = {
+    // if (!data.projects[bug.proyectoId])
+    if (!data.projects.find((p) => p.key === bug.proyectoId))
+      data.projects.push({
         key: bug.proyectoId,
         text: bug.proyecto.nombreProyecto,
         value: bug.proyecto.nombreProyecto,
-      }
-    if (!data.users[bug.usuarioId])
-      data.users[bug.usuarioId] = {
+      })
+    if (!data.users.find((p) => p.key === bug.userId))
+      data.users.push({
         key: bug.usuarioId,
         text: bug.usuario.nombreYApellidos,
         value: bug.usuario.nombreYApellidos,
-      }
+      })
   })
 
   const handleChange = (e, { name, value }) => {
@@ -37,53 +39,51 @@ const AddBugComponent = (prop) => {
     refreshListEvent()
   }
 
-  const form = (
-    <Form onSubmit={handleSubmit}>
-      <Form.Select
-        required
-        name={'project'}
-        // icon="js"
-        // iconPosition="left"
-        label="Projects:"
-        placeholder="Select Project"
-        options={data.projects}
-        error={fieldsData.project.error}
-        onChange={(e, { value }) => handleChange(e, { name: 'project', value })}
-        fluid
-        selection
-        clearable
-      />
-      <Form.Select
-        required
-        name={'user'}
-        // icon="user"
-        // iconPosition="left"
-        label="Users:"
-        placeholder="Select User"
-        options={data.users}
-        error={fieldsData.user.error}
-        onChange={(e, { value }) => handleChange(e, { name: 'user', value })}
-        fluid
-        selection
-        clearable
-      />
-      <Form.Field
-        name={'description'}
-        id="form-textarea-control-opinion"
-        control={TextArea}
-        label="Description"
-        placeholder="Bug Description"
-        error={fieldsData.description.error}
-        onChange={(e, { value }) => handleChange(e, { name: 'description', value })}
-      />
-    </Form>
-  )
+  const form = (projects, users) => {
+    return (
+      <Form onSubmit={handleSubmit}>
+        <Form.Select
+          required
+          name={'project'}
+          // icon="js"
+          // iconPosition="left"
+          label="Projects:"
+          placeholder="Select Project"
+          options={projects || []}
+          error={fieldsData.project.error}
+          // onChange={(e, { value }) => handleChange(e, { name: 'project', value })}
+          fluid
+          clearable
+        />
+        <Form.Select
+          required
+          name={'user'}
+          label="Users:"
+          placeholder="Select User"
+          options={users || []}
+          error={fieldsData.user.error}
+          // onChange={(e, { value }) => handleChange(e, { name: 'user', value })}
+          fluid
+          clearable
+        />
+        <Form.Field
+          name={'description'}
+          id="form-textarea-control-opinion"
+          control={TextArea}
+          label="Description"
+          placeholder="Bug Description"
+          error={fieldsData.description.error}
+          onChange={(e, { value }) => handleChange(e, { name: 'description', value })}
+        />
+      </Form>
+    )
+  }
 
   return (
     <ModalComponent
       title={'Add Bug'}
       triggerButtonProps={{ iconName: 'plus', label: 'Add Bugs' }}
-      form={form}
+      form={form(data.projects, data.users)}
       handleOK={handleSubmit}
     />
   )
