@@ -17,6 +17,7 @@ const CardsWrapperComponent = (props) => {
               value={card.value}
               icon={card.icon}
               series={card.series}
+              categories={card.categories}
             />
           </div>
         )

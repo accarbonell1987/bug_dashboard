@@ -35,10 +35,10 @@ const ContentComponent = () => {
       const users = await UsersServices.GetAllUsers()
       const bugs = await BugsServices.GetAllBugs()
 
-      const myCards = []
       const bugCard = DataForBugCard(bugs)
+      const userCard = DataForUserCard(users, bugs)
 
-      myCards.push(bugCard)
+      const myCards = [bugCard, userCard]
 
       setComplementaryData({ projects, users, bugs })
       setCards(myCards)
@@ -84,15 +84,44 @@ const ContentComponent = () => {
     return bugCard
   }
 
+  const DataForUserCard = (users, bugs) => {
+    if (!bugs || !users) return
+
+    //buscar la tarjeta
+    const userCard = Cards.find((card) => card.title === 'Users')
+    if (!userCard) return
+
+    //buscar la fecha de hoy y la de 7 dias antes
+    const now = HelperDate.getNow()
+    const sevenDayPassDateFromDate = HelperDate.getSevenDayPassDateFromDate(now)
+
+    //buscar todos los bugs desde hace 7 dias
+    const bugsFromSevenDayPassDate = bugs.filter((bug) => {
+      const bugCreation = HelperDate.getDateTimeFromISO(bug.creacionBug)
+      return bugCreation > sevenDayPassDateFromDate
+    })
+
+    //almacenar en un hash key: usuarioId, value: cantidad de bugs por dia
+    const hashArray = []
+    //cantidad de bugs asignados a cada usuario
+    bugsFromSevenDayPassDate.forEach((bug) => {
+      if (hashArray[bug.usuarioId]) hashArray[bug.usuarioId] += 1
+      else hashArray[bug.usuarioId] = 1
+    })
+
+    for (const key in hashArray) {
+      const element = hashArray[key]
+      userCard.categories.push(key)
+      userCard.series[0].data.push(element)
+    }
+
+    userCard.barValue = (bugsFromSevenDayPassDate.length * 100) / bugs.length || 0
+    userCard.value = `${bugsFromSevenDayPassDate.length} / ${bugs.length}` || ''
+
+    return userCard
+  }
+
   //aqui se debe de cargar los datos a enviar en las tarjetas
-
-  //bugs
-  /*
-    total: cantidad de bugs
-    series: cantidadDeBugsPorDia: [] los ultimos 7
-    value: bugs en 24horas
-  */
-
   //users
   /*
     total: cantidad de usuarios

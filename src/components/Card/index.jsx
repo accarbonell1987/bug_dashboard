@@ -46,12 +46,12 @@ const CardCompactComponent = ({ props, setExpanded }) => {
 
 // const CardExpandedComponent = ({ title, color, barValue, value, icon, series }) => {}
 const CardExpandedComponent = ({ props, setExpanded }) => {
-  const { title, color, series } = props
+  const { title, color, series, categories } = props
 
   const data = {
     options: {
       chart: {
-        type: 'area',
+        type: 'bar',
         height: 'auto',
       },
       dropShadow: {
@@ -83,16 +83,7 @@ const CardExpandedComponent = ({ props, setExpanded }) => {
         show: true,
       },
       xasis: {
-        type: 'datetime',
-        categories: [
-          '2018-09-19T00:00:00.000Z',
-          '2018-09-19T01:00:00.000Z',
-          '2018-09-19T02:00:00.000Z',
-          '2018-09-19T03:00:00.000Z',
-          '2018-09-19T04:00:00.000Z',
-          '2018-09-19T05:00:00.000Z',
-          '2018-09-19T06:00:00.000Z',
-        ],
+        categories: categories,
       },
     },
   }
