@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Icon, Modal } from 'semantic-ui-react'
 
 const ModalComponent = (props) => {
-  const { title, triggerButtonProps, form, handleOK } = props
+  const { title, triggerButtonProps, form, handleOK, activateOK } = props
   const { iconName, label } = triggerButtonProps
 
   const [open, setOpen] = useState(false)
@@ -32,7 +32,7 @@ const ModalComponent = (props) => {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={() => setOpen(false)}>Cancel</Button>
-        <Button onClick={() => handleOKEvent()} positive>
+        <Button onClick={() => handleOKEvent()} positive disabled={!activateOK}>
           Ok
         </Button>
       </Modal.Actions>

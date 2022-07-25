@@ -3,6 +3,7 @@ import { Icon, Menu, Header, Image, Table } from 'semantic-ui-react'
 
 import { GetRandomAvatarName } from 'helpers/avatars'
 import BugServices from 'api/bugs'
+import { CustomPopup } from 'components'
 
 import '../styles.css'
 import AddBugComponent from './Add'
@@ -14,11 +15,15 @@ const TableBugComponent = () => {
   const [bugsData, setBugsData] = useState([])
 
   const getAllBugs = async () => {
-    const { resultados } = await BugServices.GetAllBugs()
-    const pag = resultados.length > 10 ? true : false
+    try {
+      const resultados = await BugServices.GetAllBugs()
+      const pag = resultados.length > 10 ? true : false
 
-    setUsePagination(pag)
-    setBugsData(resultados)
+      setUsePagination(pag)
+      setBugsData(resultados)
+    } catch (error) {
+      CustomPopup('error', error)
+    }
   }
 
   useEffect(() => {
@@ -30,20 +35,22 @@ const TableBugComponent = () => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
-            <AddBugComponent refreshListEvent={() => getAllBugs()} bugsData={bugsData} />
+            <AddBugComponent refreshListEvent={() => getAllBugs()} />
           </Table.HeaderCell>
         </Table.Row>
-        <Table.Row>
-          <Table.HeaderCell>
-            <h3>Project</h3>
-          </Table.HeaderCell>
-          <Table.HeaderCell>
-            <h3>Users</h3>
-          </Table.HeaderCell>
-          <Table.HeaderCell>
-            <h3>Description</h3>
-          </Table.HeaderCell>
-        </Table.Row>
+        {bugsData.length > 0 && (
+          <Table.Row>
+            <Table.HeaderCell>
+              <h3>Project</h3>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h3>Users</h3>
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h3>Description</h3>
+            </Table.HeaderCell>
+          </Table.Row>
+        )}
       </Table.Header>
     )
   }
