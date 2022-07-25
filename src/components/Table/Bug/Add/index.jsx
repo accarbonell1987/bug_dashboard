@@ -2,13 +2,18 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Form, TextArea } from 'semantic-ui-react'
 import { ModalComponent, CustomPopup } from 'components'
 import BugsServices from 'api/bugs'
-import UsersServices from 'api/users'
-import ProjectsServices from 'api/projects'
 
 const AddBugComponent = (prop) => {
   const submitButtonReference = useRef()
 
-  const { refreshListEvent } = prop
+  const { refreshListEvent, projects, users } = prop
+
+  const selectProjects = projects.map((p) => {
+    return { key: p.id, value: p.id, text: p.nombreProyecto }
+  })
+  const selectUsers = users.map((p) => {
+    return { key: p.id, value: p.id, text: p.nombreYApellidos }
+  })
 
   const defaultFieldsData = {
     project: { value: '', error: true },
@@ -18,30 +23,7 @@ const AddBugComponent = (prop) => {
 
   //control de los estados del formulario
   const [fieldsData, setFieldsData] = useState(defaultFieldsData)
-  const [complementaryData, setComplementaryData] = useState({ projects: [], users: [] })
   const [activateOKButton, setActivateOKButton] = useState(false)
-
-  //efecto para cargar todos los proyectos y usuarios
-  useEffect(() => {
-    const getAllData = async () => {
-      try {
-        const projects = await ProjectsServices.GetAllProjects()
-        const users = await UsersServices.GetAllUsers()
-
-        const selectProjects = projects.map((p) => {
-          return { key: p.id, value: p.id, text: p.nombreProyecto }
-        })
-        const selectUsers = users.map((p) => {
-          return { key: p.id, value: p.id, text: p.nombreYApellidos }
-        })
-
-        setComplementaryData({ projects: selectProjects, users: selectUsers })
-      } catch (error) {
-        CustomPopup('error', error)
-      }
-    }
-    getAllData()
-  }, [])
 
   //efecto para la activación del botón OK
   useEffect(() => {
@@ -68,9 +50,11 @@ const AddBugComponent = (prop) => {
     } catch (error) {
       CustomPopup('error', error)
     } finally {
-      setFieldsData(defaultFieldsData)
+      cleanInputs()
     }
   }
+
+  const cleanInputs = () => setFieldsData(defaultFieldsData)
 
   const form = (projects, users) => {
     return (
@@ -116,8 +100,9 @@ const AddBugComponent = (prop) => {
     <ModalComponent
       title={'Add Bug'}
       triggerButtonProps={{ iconName: 'plus', label: 'Add Bugs' }}
-      form={form(complementaryData.projects, complementaryData.users)}
+      form={form(selectProjects, selectUsers)}
       handleOK={handleSubmit}
+      handleClose={cleanInputs}
       activateOK={activateOKButton}
     />
   )

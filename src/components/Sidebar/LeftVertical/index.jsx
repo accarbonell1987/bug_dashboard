@@ -16,7 +16,13 @@ const MenuLeftVerticalComponent = ({ size, isVertical, menuItems }) => {
   return (
     <Menu size={size} vertical={isVertical} icon>
       {menuItems.map((item, index) => (
-        <Menu.Item key={index} name={item.name} active={active.item === item.name} onClick={handleItemClick}>
+        <Menu.Item
+          key={index}
+          name={item.name}
+          active={active.item === item.name}
+          onClick={handleItemClick}
+          disabled={item.disabled}
+        >
           <Label color={active.item === item.name ? active.color : item.color}>
             <Icon name={item.icon || 'minus'} />
             {item.count}

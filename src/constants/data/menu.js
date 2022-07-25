@@ -14,6 +14,7 @@ const verticalMenu = [
     count: 0,
     color: 'black',
     default: false,
+    disabled: true,
   },
   {
     name: 'users',
@@ -22,6 +23,7 @@ const verticalMenu = [
     count: 0,
     color: 'black',
     default: false,
+    disabled: true,
   },
 ]
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Icon, Modal } from 'semantic-ui-react'
 
 const ModalComponent = (props) => {
-  const { title, triggerButtonProps, form, handleOK, activateOK } = props
+  const { title, triggerButtonProps, form, handleOK, handleClose, activateOK } = props
   const { iconName, label } = triggerButtonProps
 
   const [open, setOpen] = useState(false)
@@ -12,11 +12,18 @@ const ModalComponent = (props) => {
     setOpen(false)
   }
 
+  const handleCloseEvent = () => {
+    handleClose()
+    setOpen(false)
+  }
+
   return (
     <Modal
       closeIcon
-      onClose={() => setOpen(false)}
+      onClose={() => handleCloseEvent()}
       onOpen={() => setOpen(true)}
+      closeOnEscape={false}
+      closeOnDimmerClick={false}
       open={open}
       dimmer={'blurring'}
       trigger={
@@ -31,7 +38,7 @@ const ModalComponent = (props) => {
         <Modal.Description>{form}</Modal.Description>
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={() => setOpen(false)}>Cancel</Button>
+        <Button onClick={() => handleCloseEvent()}>Cancel</Button>
         <Button onClick={() => handleOKEvent()} positive disabled={!activateOK}>
           Ok
         </Button>

@@ -8,8 +8,10 @@ import { CustomPopup } from 'components'
 import '../styles.css'
 import AddBugComponent from './Add'
 
-const TableBugComponent = () => {
+const TableBugComponent = (props) => {
   const assetsPath = 'img/avatars'
+
+  const { complementaryData } = props
 
   const [usePagination, setUsePagination] = useState(false)
   const [bugsData, setBugsData] = useState([])
@@ -35,7 +37,11 @@ const TableBugComponent = () => {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
-            <AddBugComponent refreshListEvent={() => getAllBugs()} />
+            <AddBugComponent
+              refreshListEvent={() => getAllBugs()}
+              projects={complementaryData.projects}
+              users={complementaryData.users}
+            />
           </Table.HeaderCell>
         </Table.Row>
         {bugsData.length > 0 && (
