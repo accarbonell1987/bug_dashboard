@@ -1,10 +1,10 @@
 import React from 'react'
 
 import './styles.css'
-import { cards } from 'constants/data/cards'
 import { CardComponent } from 'components'
 
-const CardsWrapperComponent = () => {
+const CardsWrapperComponent = (props) => {
+  const { cards } = props
   return (
     <div className="Cards">
       {cards.map((card, id) => {

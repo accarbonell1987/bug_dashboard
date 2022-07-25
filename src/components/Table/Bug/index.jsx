@@ -11,7 +11,7 @@ import AddBugComponent from './Add'
 const TableBugComponent = (props) => {
   const assetsPath = 'img/avatars'
 
-  const { complementaryData } = props
+  const { complementaryData, refreshAllData } = props
 
   const [usePagination, setUsePagination] = useState(false)
   const [bugsData, setBugsData] = useState([])
@@ -23,6 +23,8 @@ const TableBugComponent = (props) => {
 
       setUsePagination(pag)
       setBugsData(resultados)
+
+      refreshAllData()
     } catch (error) {
       CustomPopup('error', error)
     }

@@ -38,7 +38,7 @@ const CardCompactComponent = ({ props, setExpanded }) => {
       <div className="Details">
         <Icon name={icon} />
         <span>{value}</span>
-        <span>Last 24 Hours</span>
+        <span>Last 7 Days</span>
       </div>
     </motion.div>
   )

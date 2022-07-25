@@ -2,24 +2,31 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import './styles.css'
 import { CardsWrapperComponent, TableBug, CustomPopup } from 'components'
+import { HelperDate, DateTime } from 'helpers/date'
 
 import BugsServices from 'api/bugs'
 import UsersServices from 'api/users'
 import ProjectsServices from 'api/projects'
+
+import { Cards } from 'constants/data/cards'
 
 const ContentComponent = () => {
   const location = useLocation()
   const path = location.pathname
 
   const [complementaryData, setComplementaryData] = useState({ projects: [], users: [], bugs: [] })
+  const [cards, setCards] = useState([])
 
   const TableToReturn = () => {
-    return ['/bugs', '/'].includes(path) ? <TableBug complementaryData={complementaryData} /> : null
+    return ['/bugs', '/'].includes(path) ? (
+      <TableBug complementaryData={complementaryData} refreshAllData={getAllData} />
+    ) : null
   }
 
   //efecto para cargar todos los proyectos y usuarios
   useEffect(() => {
     getAllData()
+    DataForBugCard()
   }, [])
 
   const getAllData = async () => {
@@ -28,10 +35,53 @@ const ContentComponent = () => {
       const users = await UsersServices.GetAllUsers()
       const bugs = await BugsServices.GetAllBugs()
 
+      const myCards = []
+      const bugCard = DataForBugCard(bugs)
+
+      myCards.push(bugCard)
+
       setComplementaryData({ projects, users, bugs })
+      setCards(myCards)
     } catch (error) {
       CustomPopup('error', error)
     }
+  }
+
+  const DataForBugCard = (bugs) => {
+    if (!bugs) return
+
+    //buscar la tarjeta
+    const bugCard = Cards.find((card) => card.title === 'Bugs')
+    if (!bugCard) return
+
+    //buscar la fecha de hoy y la de 7 dias antes
+    const now = HelperDate.getNow()
+    const sevenDayPassDateFromDate = HelperDate.getSevenDayPassDateFromDate(now)
+
+    //buscar todos los bugs desde hace 7 dias
+    const bugsFromSevenDayPassDate = bugs.filter((bug) => {
+      const bugCreation = HelperDate.getDateTimeFromISO(bug.creacionBug)
+      return bugCreation > sevenDayPassDateFromDate
+    })
+
+    //almacenar en un hash key: fecha, value: cantidad de bugs por dia
+    const hashOfBugs = []
+    bugsFromSevenDayPassDate.forEach((bug) => {
+      const bugCreation = HelperDate.getDateTimeFromISO(bug.creacionBug).toLocaleString(DateTime.DATE_SHORT)
+      if (hashOfBugs[bugCreation]) hashOfBugs[bugCreation] += 1
+      else hashOfBugs[bugCreation] = 1
+    })
+
+    for (const key in hashOfBugs) {
+      const element = hashOfBugs[key]
+      bugCard.categories.push(key)
+      bugCard.series[0].data.push(element)
+    }
+
+    bugCard.barValue = (bugsFromSevenDayPassDate.length * 100) / bugs.length || 0
+    bugCard.value = `${bugsFromSevenDayPassDate.length} / ${bugs.length}` || ''
+
+    return bugCard
   }
 
   //aqui se debe de cargar los datos a enviar en las tarjetas
@@ -60,7 +110,7 @@ const ContentComponent = () => {
   return (
     <div className="ContentMain">
       <h1>Dashboard</h1>
-      <CardsWrapperComponent />
+      <CardsWrapperComponent cards={cards} />
       {TableToReturn()}
     </div>
   )
