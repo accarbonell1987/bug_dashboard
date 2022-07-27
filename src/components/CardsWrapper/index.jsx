@@ -5,9 +5,16 @@ import { CardComponent } from 'components'
 
 const CardsWrapperComponent = (props) => {
   const { cards } = props
+
   return (
     <div className="Cards">
       {cards.map((card, id) => {
+        const chart = {
+          type: card.type,
+          series: card.series,
+          categories: card.categories,
+          labels: card.labels,
+        }
         return (
           <div className="parentContainer" key={id}>
             <CardComponent
@@ -16,8 +23,7 @@ const CardsWrapperComponent = (props) => {
               barValue={card.barValue}
               value={card.value}
               icon={card.icon}
-              series={card.series}
-              categories={card.categories}
+              chart={chart}
             />
           </div>
         )

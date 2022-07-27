@@ -9,6 +9,7 @@ const Cards = [
     value: '',
     png: 'bug',
     icon: 'bug',
+    type: 'bar',
     categories: [],
     series: [
       {
@@ -16,6 +17,7 @@ const Cards = [
         data: [],
       },
     ],
+    labels: [],
   },
   {
     title: 'Projects',
@@ -23,17 +25,19 @@ const Cards = [
       backGround: 'linear-gradient(180deg, #ff919d 0%, #fc929d 100%)',
       boxShadow: '0px 10px 20px 0px #fdc0c7',
     },
-    barValue: 80,
-    value: '14,270',
+    barValue: 0,
+    value: '',
     png: 'js',
     icon: 'js',
+    type: 'bar',
     categories: [],
     series: [
       {
         name: 'Projects',
-        data: [10, 100, 50, 70, 80, 30, 40],
+        data: [],
       },
     ],
+    labels: [],
   },
   {
     title: 'Users',
@@ -45,6 +49,7 @@ const Cards = [
     value: '',
     png: 'user',
     icon: 'user',
+    type: 'bar',
     categories: [],
     series: [
       {
@@ -52,6 +57,7 @@ const Cards = [
         data: [],
       },
     ],
+    labels: [],
   },
 ]
 

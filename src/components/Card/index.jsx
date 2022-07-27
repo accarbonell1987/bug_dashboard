@@ -6,7 +6,7 @@ import 'react-circular-progressbar/dist/styles.css'
 import { Icon } from 'semantic-ui-react'
 import { CircularProgressbar } from 'react-circular-progressbar'
 import { AnimateSharedLayout, motion } from 'framer-motion/dist/framer-motion'
-import Chart from 'react-apexcharts'
+import ChartComponent from 'components/Chart'
 
 const CardComponent = (props) => {
   const [expanded, setExpanded] = useState(false)
@@ -46,47 +46,7 @@ const CardCompactComponent = ({ props, setExpanded }) => {
 
 // const CardExpandedComponent = ({ title, color, barValue, value, icon, series }) => {}
 const CardExpandedComponent = ({ props, setExpanded }) => {
-  const { title, color, series, categories } = props
-
-  const data = {
-    options: {
-      chart: {
-        type: 'bar',
-        height: 'auto',
-      },
-      dropShadow: {
-        enabled: true,
-        enabledOnSeries: undefined,
-        top: 0,
-        left: 0,
-        blur: 3,
-        color: '#000',
-        opacity: 0.35,
-      },
-      fill: {
-        colors: ['#fff'],
-        type: 'gradient',
-      },
-      dataLabels: {
-        enabled: false,
-      },
-      stroke: {
-        curve: 'smooth',
-        color: ['white'],
-      },
-      tooltip: {
-        x: {
-          format: 'dd MMM yyyy HH:mm',
-        },
-      },
-      grid: {
-        show: true,
-      },
-      xasis: {
-        categories: categories,
-      },
-    },
-  }
+  const { title, color, chart } = props
 
   return (
     <motion.div
@@ -99,9 +59,9 @@ const CardExpandedComponent = ({ props, setExpanded }) => {
       <div className="CardExpandedDetails">
         <span>{title}</span>
         <div className="ChartContainer">
-          <Chart series={series} type={'area'} options={data.options} />
+          <ChartComponent chart={chart} />
         </div>
-        <span>Last 24 Hours</span>
+        <span>Last 7 Days</span>
       </div>
     </motion.div>
   )
