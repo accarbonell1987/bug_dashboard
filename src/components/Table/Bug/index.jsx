@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Icon, Menu, Header, Image, Table } from 'semantic-ui-react'
 
 import { GetRandomAvatarName } from 'helpers/avatars'
+import { HelperDate, DateTime } from 'helpers/date'
 import BugServices from 'api/bugs'
 import { CustomPopup } from 'components'
 
@@ -57,6 +58,9 @@ const TableBugComponent = (props) => {
             <Table.HeaderCell>
               <h3>Description</h3>
             </Table.HeaderCell>
+            <Table.HeaderCell>
+              <h3>Creation Date</h3>
+            </Table.HeaderCell>
           </Table.Row>
         )}
       </Table.Header>
@@ -82,6 +86,7 @@ const TableBugComponent = (props) => {
           const userName = bug.usuario.nombreYApellidos
           const projectName = bug.proyecto.nombreProyecto
           const description = bug.descripcionBug
+          const creationDate = HelperDate.getDateTimeFromISO(bug.creacionBug).toLocaleString(DateTime.DATE_SHORT)
           const avatarName = GetRandomAvatarName()
 
           return (
@@ -89,6 +94,7 @@ const TableBugComponent = (props) => {
               <Table.Cell>{projectName}</Table.Cell>
               <Table.Cell>{UserHeader(avatarName, userName, '')}</Table.Cell>
               <Table.Cell>{description}</Table.Cell>
+              <Table.Cell>{creationDate}</Table.Cell>
             </Table.Row>
           )
         })}
